@@ -23,7 +23,7 @@ int main()
 
 	readData(input, output);
 
-	cout << "Starting thetas = 0 and my constant alpha = 0.0000001."<< endl;
+	cout << "Starting thetas = 0 and my constant alpha = 0.000001."<< endl;
 
 	do
 	{

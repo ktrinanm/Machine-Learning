@@ -12,14 +12,14 @@ double calculateGradient(vector<double> input, vector<double> output,
 int main()
 {
 	vector<double> input, output, theta, gradientOld(2), gradientCurr;
-	double alpha = 0.0001;
+	double alpha = 1.0, alphaOld;
 	int i = 0;
 	//set theta_0, theta_1 to 1
 	theta.push_back(0);
 	theta.push_back(0);
 	//set gradientOld of theta_0 and theta_1 to a large number
-	gradientCurr.push_back(10000);
-	gradientCurr.push_back(10000);
+	gradientCurr.push_back(1);
+	gradientCurr.push_back(1);
 
 	readData(input, output);
 
@@ -31,15 +31,21 @@ int main()
 		gradientCurr[0] = calculateGradient(input, output, theta, 0);
 		gradientCurr[1] = calculateGradient(input, output, theta, 1);
 
+		alphaOld = alpha;
+
 		if(2*fabs(gradientCurr[0]) < fabs(gradientOld[0])
 				&& 2*fabs(gradientCurr[1]) < fabs(gradientOld[1]))
 		{
 			alpha = 2*alpha;
+			cout << "\tUpdated alpha to: " << alpha << endl;
 		}
-		else if( fabs(gradientCurr[0]) > fabs(gradientOld[0])
-				|| fabs(gradientCurr[1]) > fabs(gradientOld[1]))
+		while((fabs(alpha*gradientCurr[0]) 
+					> fabs(alphaOld*gradientOld[0]) 
+					&& fabs(alpha*gradientCurr[1])
+				   	> fabs(alphaOld*gradientOld[1])))
 		{
 			alpha = alpha*0.5;
+			cout << "\tUpdated alpha to: " << alpha << endl;
 		}
 
 		cout << "\tNew Gradient for Theta_0: " << gradientCurr[0] << endl;
@@ -51,8 +57,7 @@ int main()
 		cout << "\tNew Theta_0: " << theta[0] << endl;
 		cout << "\tNew Theta_1: " << theta[1] << endl;
 		i++;
-	}while((fabs(gradientOld[0]-gradientCurr[0]) >= 0.0099) || 
-			(fabs(gradientOld[1]-gradientCurr[1]) >= 0.0099));
+	}while(fabs(gradientCurr[0]) > 0.01 || fabs(gradientCurr[1]) > 0.01);
 
 	cout << "Gradient at step k and step k-1 are similar to " 
 		<< "two decimal places. " << endl;

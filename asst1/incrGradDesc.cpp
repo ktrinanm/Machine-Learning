@@ -13,8 +13,7 @@ void shuffle(vector<double> &input, vector<double> &output);
 
 int main()
 {
-	vector<double> input, output, theta, gradientOld(2), gradientCurr, 
-		thetaOld(2);
+	vector<double> input, output, theta, gradientOld(2), gradientCurr;
 	double alpha = 0.0001;
 	int j = 0;
 
@@ -30,41 +29,43 @@ int main()
 
 	do
 	{
+		cout << "Epoch " << j << ": " << endl;
 		shuffle(input, output);
+
 		for(int i = 0; i < input.size(); i++)
 		{
-			cout << "Iteration " << j*input.size() + i << ": " << endl;
+			//Save Gradient from last iteration
 			gradientOld[0] = gradientCurr[0];
 			gradientOld[1] = gradientCurr[1];
-			gradientCurr[0] = calculateGradient(input[i], output[i], theta,
-				   	0);
-			gradientCurr[1] = calculateGradient(input[i], output[i], theta, 
-					1);
-
-			cout << "\tNew Gradient for Theta_0: " << gradientCurr[0] 
-				<< endl;
-			cout << "\tNew Gradient for Theta_1: " << gradientCurr[1] 
-				<< endl;
-
-			thetaOld[0] = theta[0];
-			thetaOld[1] = theta[1];
+			
+			//Update Gradient
+			gradientCurr[0] = 
+				calculateGradient(input[i], output[i], theta, 0);
+			gradientCurr[1] = 
+				calculateGradient(input[i], output[i], theta, 1);
 
 			theta[0] = theta[0] + alpha*gradientCurr[0];
 			theta[1] = theta[1] + alpha*gradientCurr[1];
 
-			cout << "\tNew Theta_0: " << theta[0] << endl;
-			cout << "\tNew Theta_1: " << theta[1] << endl;
-
-			if((fabs(thetaOld[0]-theta[0]) < 0.01) && 
-			(fabs(thetaOld[1]-theta[1]) < 0.01))
-			{
-				break;
-			}
+//			if((fabs(gradientCurr[0]) < 0.01) && 
+//			(fabs(gradientCurr[1]) < 0.01))
+//			{
+//				break;
+//			}
 		}
+	
+		cout << "\tNew Gradient for Theta_0: " << gradientCurr[0] 
+			<< endl;
+		cout << "\tNew Gradient for Theta_1: " << gradientCurr[1] 
+			<< endl;
+	
+		cout << "\tNew Theta_0: " << theta[0] << endl;
+		cout << "\tNew Theta_1: " << theta[1] << endl;
+		
+		// Update the Epoch Count
 		j++;
-
-	}while((fabs(thetaOld[0]-theta[0]) >= 0.01) || 
-			(fabs(thetaOld[1]-theta[1]) >= 0.01));
+	}while((fabs(gradientCurr[0]) >= 0.01) || 
+			(fabs(gradientCurr[1]) >= 0.01));
 
 	cout << "Gradient at step k and step k-1 are similar to " 
 		<< "two decimal places. " << endl;
