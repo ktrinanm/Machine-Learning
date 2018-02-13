@@ -11,19 +11,21 @@ double calculateGradient(double meanX, double meanY,
 int main()
 {
 	vector<double> input, output, theta, gradientOld(2), gradientCurr;
-	double alpha = 0.0000001;
+	double alpha = 0.000001;
 	int i = 0;
+
 	//set theta_0, theta_1 to 1
 	theta.push_back(0);
 	theta.push_back(0);
+
 	//set gradientOld of theta_0 and theta_1 to a large number
 	gradientCurr.push_back(10000);
 	gradientCurr.push_back(10000);
 
 	double meanX = 50.5;
-	double meanY = 369.28;
+	double meanY = 355.02;
 
-	cout << "Starting thetas = 0 and my constant alpha = 0.0000001."<< endl;
+	cout << "Starting thetas = 0 and my constant alpha = 0.000001."<< endl;
 
 	do
 	{
@@ -42,8 +44,8 @@ int main()
 		cout << "\tNew Theta_0: " << theta[0] << endl;
 		cout << "\tNew Theta_1: " << theta[1] << endl;
 		i++;
-	}while((fabs(gradientOld[0]-gradientCurr[0]) >= 0.0099) || 
-			(fabs(gradientOld[1]-gradientCurr[1]) >= 0.0099));
+	}while((fabs(gradientCurr[0]) > 0.01) || 
+			(fabs(gradientCurr[1]) > 0.01));
 
 	cout << "Gradient at step k and step k-1 are similar to " 
 		<< "two decimal places. " << endl;

@@ -14,9 +14,9 @@ unsigned int detectErrors(vector<double> &input, vector<double> &output,
 int main()
 {
 	vector<double> input, output, theta, gradientOld(2), gradientCurr;
-	double alpha = 0.0000001;
+	double alpha = 0.000001;
 	int i = 0;
-	//set theta_0, theta_1 to 0
+	//set theta_0, theta_1 to 1
 	theta.push_back(0);
 	theta.push_back(0);
 	//set gradientOld of theta_0 and theta_1 to a large number
@@ -25,24 +25,32 @@ int main()
 
 	readData(input, output);
 
-	cout << "Starting thetas = 0 and my constant alpha = 0.0000001."<< endl;
+	cout << "Starting thetas = 0 and my constant alpha = 0.000001."<< endl;
 
 	do
 	{
+		//cout << "Iteration " << i << ": " << endl;
 		gradientOld[0] = gradientCurr[0];
 		gradientOld[1] = gradientCurr[1];
 		gradientCurr[0] = calculateGradient(input, output, theta, 0);
 		gradientCurr[1] = calculateGradient(input, output, theta, 1);
 
+		//cout << "\tNew Gradient for Theta_0: " << gradientCurr[0] << endl;
+		//cout << "\tNew Gradient for Theta_1: " << gradientCurr[1] << endl;
+
 		theta[0] = theta[0] + alpha*gradientCurr[0];
 		theta[1] = theta[1] + alpha*gradientCurr[1];
 
+		//cout << "\tNew Theta_0: " << theta[0] << endl;
+		//cout << "\tNew Theta_1: " << theta[1] << endl;
 		i++;
 	}while((fabs(gradientCurr[0]) >= 0.0099) || 
 			(fabs(gradientCurr[1]) >= 0.0099));
 
-	cout << "Ending Theta_0: " << theta[0] << endl;
-	cout << "Ending Theta_1: " << theta[1] << endl;
+	//cout << "Absolute values of gradients are less than 0.01." << endl;
+	
+	cout << "New Theta_0: " << theta[0] << endl;
+	cout << "New Theta_1: " << theta[1] << endl;
 
 	unsigned int numErrors = detectErrors(input, output, theta);
 
